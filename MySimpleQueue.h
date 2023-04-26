@@ -24,6 +24,10 @@ public:
         T val;
     };
 
+private:
+    QueueNode *head = nullptr;
+    QueueNode *tail = head;
+    int size = 0;
 
 public:
     class Iterator : public iterator<output_iterator_tag, QueueNode, ptrdiff_t, QueueNode *, QueueNode &>
@@ -67,17 +71,12 @@ public:
         }
     };
 
-private:
-    QueueNode *head = nullptr;
-    QueueNode *tail = head;
-    int size = 0;
-
 public:
     MySimpleQueue(){};
 
     ~MySimpleQueue() {};
 
-    bool add(T value)
+    void add(T value)
     {
         QueueNode *newNode = new QueueNode(value);
         if (this->isEmpty())
@@ -90,7 +89,6 @@ public:
             this->tail = newNode;
         }
         size++;
-        return true;
     }
 
     T peek()
