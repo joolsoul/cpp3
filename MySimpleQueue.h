@@ -24,55 +24,48 @@ public:
         T val;
     };
 
-//public:
-//    struct Iterator
-//    {
-//        using iterator_category = std::forward_iterator_tag;
-//        using difference_type = std::ptrdiff_t;
-//        using node_t = QueueNode;
-//        using node_ptr = QueueNode *;
-//        using node_ref = QueueNode &;
-//        using type_ptr = T *;
-//        using type_ref = T &;
-//
-//        Iterator(node_ptr ptr) : nPtr(ptr) {}
-//
-//        Iterator operator++()
-//        {
-//            nPtr = nPtr->nextNode;
-//            return *this;
-//        }
-//
-//        Iterator operator++(int)
-//        {
-//            Iterator stash = *this;
-//            nPtr = nPtr->nextNode;
-//            return stash;
-//        }
-//
-//        type_ref operator*() const
-//        {
-//            return nPtr->val;
-//        }
-//
-//        type_ptr operator->()
-//        {
-//            return &(nPtr->val);
-//        }
-//
-//        bool operator==(const Iterator &other)
-//        {
-//            return nPtr == other.nPtr;
-//        }
-//
-//        bool operator!=(const Iterator &other)
-//        {
-//            return nPtr != other.nPtr;
-//        }
-//
-//    private:
-//        node_ptr nPtr;
-//    };
+
+public:
+    class Iterator : public iterator<output_iterator_tag, QueueNode, ptrdiff_t, QueueNode *, QueueNode &>
+    {
+        private:
+            QueueNode* nodePtr;
+
+        public:
+            Iterator(QueueNode* nodePtr) : nodePtr(nodePtr) {}
+
+        Iterator operator++()
+        {
+            nodePtr = nodePtr->nextNode;
+            return *this;
+        }
+
+        Iterator operator++(int)
+        {
+            nodePtr = nodePtr->nextNode;
+            return *this;
+        }
+
+        T& operator*() const
+        {
+            return nodePtr->val;
+        }
+
+        T* operator->()
+        {
+            return &(nodePtr->val);
+        }
+
+        bool operator==(const Iterator &other)
+        {
+            return nodePtr == other.nodePtr;
+        }
+
+        bool operator!=(const Iterator &other)
+        {
+            return nodePtr != other.nodePtr;
+        }
+    };
 
 private:
     QueueNode *head = nullptr;
@@ -146,8 +139,8 @@ public:
         return this->size == 0;
     }
 
-//    Iterator begin() { return Iterator(this->head); }
-//    Iterator end() { return Iterator(nullptr); }
+    Iterator begin() { return Iterator(this->head); }
+    Iterator end() { return Iterator(nullptr); }
 };
 
 #endif //CPP3_MYSIMPLEQUEUE_H
